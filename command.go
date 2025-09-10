@@ -366,6 +366,8 @@ func ExecuteOutput(c parser.Command, v *VHS) error {
 		v.Options.Video.Output.Frames = c.Args
 	case ".webm":
 		v.Options.Video.Output.WebM = c.Args
+	case ".avif":
+		v.Options.Video.Output.AVIF = c.Args
 	default:
 		v.Options.Video.Output.GIF = c.Args
 	}

@@ -26,6 +26,7 @@ const (
 	mp4  = ".mp4"
 	webm = ".webm"
 	gif  = ".gif"
+	avif = ".avif"
 )
 
 // randomDir returns a random temporary directory to be used for storing frames
@@ -44,6 +45,7 @@ type VideoOutputs struct {
 	GIF    string
 	WebM   string
 	MP4    string
+	AVIF   string
 	Frames string
 }
 
@@ -70,7 +72,7 @@ func DefaultVideoOptions() VideoOptions {
 		Framerate:     defaultFramerate,
 		Input:         randomDir(),
 		MaxColors:     defaultMaxColors,
-		Output:        VideoOutputs{GIF: "", WebM: "", MP4: "", Frames: ""},
+		Output:        VideoOutputs{GIF: "", WebM: "", MP4: "", Frames: "", AVIF: ""},
 		PlaybackSpeed: defaultPlaybackSpeed,
 		StartingFrame: defaultStartingFrame,
 	}
@@ -80,7 +82,7 @@ func marginFillIsColor(marginFill string) bool {
 	return strings.HasPrefix(marginFill, "#")
 }
 
-// makeMedia takes a list of images (as frames) and converts them to a GIF/WebM/MP4.
+// makeMedia takes a list of images (as frames) and converts them to a GIF/WebM/MP4/AVIF.
 func makeMedia(opts VideoOptions, targetFile string) *exec.Cmd {
 	if targetFile == "" {
 		return nil
@@ -143,6 +145,8 @@ func buildFFopts(opts VideoOptions, targetFile string) []string {
 		streamBuilder = streamBuilder.WithWebm()
 	case mp4:
 		streamBuilder = streamBuilder.WithMP4()
+	case avif:
+		streamBuilder = streamBuilder.WithAVIF()
 	}
 
 	args = append(args, streamBuilder.Build()...)
@@ -165,4 +169,9 @@ func MakeWebM(opts VideoOptions) *exec.Cmd {
 // MakeMP4 takes a list of images (as frames) and converts them to an MP4.
 func MakeMP4(opts VideoOptions) *exec.Cmd {
 	return makeMedia(opts, opts.Output.MP4)
+}
+
+// AVIFWebM takes a list of images (as frames) and converts them to a AVIF.
+func MakeAVIF(opts VideoOptions) *exec.Cmd {
+	return makeMedia(opts, opts.Output.AVIF)
 }

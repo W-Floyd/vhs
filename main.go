@@ -104,6 +104,8 @@ var (
 						v.Options.Video.Output.WebM = output
 					} else if strings.HasSuffix(output, mp4) {
 						v.Options.Video.Output.MP4 = output
+					} else if strings.HasSuffix(output, avif) {
+						v.Options.Video.Output.AVIF = output
 					}
 				}
 

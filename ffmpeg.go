@@ -322,6 +322,17 @@ func (sb *StreamBuilder) WithWebm() *StreamBuilder {
 	return sb
 }
 
+// WithAVIF adds mp4 stream with required config.
+func (sb *StreamBuilder) WithAVIF() *StreamBuilder {
+	sb.args = append(sb.args,
+		"-vcodec", "libaom-av1",
+		"-an",
+		"-crf", "30",
+	)
+
+	return sb
+}
+
 // Build returns streams for using with ffmepg.
 func (sb *StreamBuilder) Build() []string {
 	return sb.args
